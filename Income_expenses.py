@@ -218,8 +218,9 @@ async def get_incomes(update: Update, context: CallbackContext) -> None:
         for i, income in enumerate(user_incomes):
             income_category = list(income.keys())[0]
             income_date = list(income.values())[0]['time']
-            if income_category == category_filter and income_date >= datetime.strptime(date_filter, '%Y-%m-%d %H:%M:%S'):
-                formatted_filtered_incomes.append(f"{i + 1}. {list(income.values())[0]}")
+            expense_data = list(income.values())[0]
+            if income_category == category_filter and datetime.strptime(income_date, '%Y-%m-%d %H:%M:%S') >= datetime.strptime(date_filter, '%Y-%m-%d %H:%M:%S'):
+                formatted_filtered_incomes.append(f"{i + 1}. Category: {expense_data['category']}, Amount: {expense_data['amount']}, Time: {expense_data['time']}")
 
         if formatted_filtered_incomes:
             await update.message.reply_text("\n".join(formatted_filtered_incomes))
